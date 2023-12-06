@@ -7,6 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -15,7 +17,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class ChatAppLauncher extends Application {
+public class Client extends Application {
     private PrintWriter out;
 
     public static void main(String[] args) {
@@ -27,15 +29,24 @@ public class ChatAppLauncher extends Application {
         BorderPane root = new BorderPane();
 
         TextArea chatTextArea = new TextArea();
+        chatTextArea.setPrefWidth(374);
+        chatTextArea.setPrefHeight(569);
         chatTextArea.setEditable(false);
 
         ScrollPane scrollPane = new ScrollPane(chatTextArea);
         root.setCenter(scrollPane);
 
         TextField messageInputField = new TextField();
+        messageInputField.setPrefWidth(335);
+        messageInputField.setPrefHeight(36);
         messageInputField.setPromptText("Type your message here...");
 
-        Button sendButton = new Button("Send");
+        Image image = new Image("F:\\AOOP Project\\MyChatApp\\src\\main\\resources\\com\\example\\mychatapp\\Icon\\img.png");
+        ImageView sendImage = new ImageView(image);
+
+
+        Button sendButton = new Button("",sendImage);
+        sendButton.setPrefHeight(35);
         sendButton.setOnAction(event -> sendMessage(messageInputField));
 
         BorderPane bottomPane = new BorderPane();
@@ -43,7 +54,7 @@ public class ChatAppLauncher extends Application {
         bottomPane.setRight(sendButton);
         root.setBottom(bottomPane);
 
-        Scene scene = new Scene(root, 400, 300);
+        Scene scene = new Scene(root, 377, 597);
         primaryStage.setTitle("My Chat App");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -68,8 +79,6 @@ public class ChatAppLauncher extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // Ensure that the socket is closed when the application is closed
         primaryStage.setOnCloseRequest(event -> {
             if (out != null) {
                 out.close();
@@ -81,7 +90,6 @@ public class ChatAppLauncher extends Application {
         String message = messageInputField.getText();
         if (!message.isEmpty()) {
             out.println(message);
-            // Do not update the UI here, let the message arrive from the server
             messageInputField.clear();
         }
     }

@@ -1,3 +1,5 @@
+package com.example.mychatapp;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -30,11 +32,10 @@ public class Server {
     static void broadcastMessage(String message, ClientHandler sender) {
         logEvent(sender.getClientName() + ": " + message);
         for (ClientHandler client : clients.values()) {
-            if (client != sender) {
-                client.sendMessage(sender.getClientName() + ": " + message);
-            }
+            client.sendMessage(sender.getClientName() + ": " + message);
         }
     }
+
 
     private static void sendPreviousMessages(ClientHandler clientHandler) {
         try (Scanner logScanner = new Scanner(new File("previousMassage.txt"))) {
